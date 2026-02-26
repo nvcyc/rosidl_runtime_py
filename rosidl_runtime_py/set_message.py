@@ -22,6 +22,12 @@ from typing import List
 
 import numpy
 
+try:
+    from rcl_buffer import Buffer as _RclBuffer
+    _has_rcl_buffer = True
+except ImportError:
+    _has_rcl_buffer = False
+
 from rosidl_parser.definition import AbstractNestedType
 from rosidl_parser.definition import NamespacedType
 from rosidl_runtime_py.convert import get_message_slot_types
@@ -69,6 +75,8 @@ def set_message_fields(
             qualified_class_name = '{}.{}'.format(field_type.__module__, field_type.__name__)
             if field_type is array.array:
                 value = field_type(field.typecode, field_value)
+            elif _has_rcl_buffer and type(field) is _RclBuffer:
+                value = array.array(field.typecode, field_value)
             elif field_type is numpy.ndarray:
                 value = numpy.array(field_value, dtype=field.dtype)
             elif type(field_value) is field_type:
