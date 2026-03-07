@@ -22,10 +22,10 @@ import rosidl_parser.definition
 import yaml
 
 try:
-    from rcl_buffer import Buffer as _RclBuffer
-    _has_rcl_buffer = True
+    from rosidl_buffer import Buffer as _RosidlBuffer
+    _has_rosidl_buffer = True
 except ImportError:
-    _has_rcl_buffer = False
+    _has_rosidl_buffer = False
 
 
 __yaml_representer_registered = False
@@ -122,7 +122,7 @@ def message_to_csv(
     def to_string(val, field_type=None):
         nonlocal truncate_length, no_arr, no_str
         r = ''
-        if _has_rcl_buffer and type(val) is _RclBuffer:
+        if _has_rosidl_buffer and type(val) is _RosidlBuffer:
             if no_arr is True and field_type is not None:
                 r = __abbreviate_array_info(val, field_type)
             else:
@@ -229,7 +229,7 @@ def _convert_value(
             value = '<string length: <{0}>>'.format(len(value))
         elif truncate_length is not None and len(value) > truncate_length:
             value = value[:truncate_length] + '...'
-    elif _has_rcl_buffer and type(value) is _RclBuffer:
+    elif _has_rosidl_buffer and type(value) is _RosidlBuffer:
         if no_arr is True and field_type is not None:
             value = __abbreviate_array_info(value, field_type)
         else:
