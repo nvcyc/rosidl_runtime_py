@@ -76,7 +76,7 @@ def set_message_fields(
             if field_type is array.array:
                 value = field_type(field.typecode, field_value)
             elif _has_rosidl_buffer and type(field) is _RosidlBuffer:
-                value = array.array(field.typecode, field_value)
+                value = array.array('B', field_value)
             elif field_type is numpy.ndarray:
                 value = numpy.array(field_value, dtype=field.dtype)
             elif type(field_value) is field_type:
